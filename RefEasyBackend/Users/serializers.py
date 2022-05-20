@@ -83,5 +83,5 @@ class ApplicantSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 
     class Meta:
-        model = Employee
+        model = Applicant
         fields = '__all__'
