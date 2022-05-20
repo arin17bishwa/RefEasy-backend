@@ -41,3 +41,21 @@ class UserRegistrationView(CreateAPIView):
         else:
             profile = Applicant(user=user, role=grp_name, email=email)
         profile.save()
+
+
+class AllUsersView(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsAdminUser,)
+
+
+class AllEmployeesView(ListAPIView):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+    permission_classes = (IsAdminUser,)
+
+
+class AllApplicantsView(ListAPIView):
+    queryset = Applicant.objects.all()
+    serializer_class = ApplicantSerializer
+    permission_classes = (IsAdminUser,)
