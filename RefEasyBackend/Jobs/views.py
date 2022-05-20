@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 from rest_framework import generics
 from rest_framework.serializers import ValidationError
 from rest_framework.decorators import api_view, permission_classes
@@ -67,8 +68,10 @@ class JobRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         is_open = obj.is_open
         if is_open:
             return True
-
-        return user.groups.first().name != 'APP'
+        final_decision = (user.is_authenticated and user.groups.first().name != 'APP')
+        if not final_decision:
+            raise Http404
+        return True
 
     def put(self, request, *args, **kwargs):
         _ = self.check_update_permissions(request, *args, **kwargs)
