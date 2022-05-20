@@ -39,7 +39,7 @@ class Applicant(models.Model):
 
 
 def post_save_userGroup(sender, instance, created, *args, **kwargs):
-    if not created and not instance.groups.exists():
+    if created and not instance.groups.exists():
         if instance.is_superuser:
             group_name = 'HR'
         else:
