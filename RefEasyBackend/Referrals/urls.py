@@ -6,7 +6,7 @@ app_name = 'Referrals'
 urlpatterns = [
     path('', views.GetReferralLink.as_view(), name='referral_link_for_employee'),
     path('myreferrals/', views.TrackMyReferral.as_view(), name='my-referrals'),
-    path('allreferrals', views.ListAllReferrals.as_view(), name='list-referrals'),
+    path('all-referrals/', views.ListAllReferrals.as_view(), name='list-referrals'),
     path('apply/<slug:slug>/', views.ReferralsCreateView.as_view(), name='list-create-jobs'),
     path('updatestatus/', views.ReferralsUpdateView.as_view(), name='update-status'),
 ]
