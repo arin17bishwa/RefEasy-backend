@@ -30,7 +30,8 @@ class ReferralsCreateView(APIView):
     def post(self, request, jobid):
         user = self.request.user
         if user.groups.first().name != 'APP':
-            return Response({'error':'Employee cannot apply. Applicants have to aply'}, status=status.HTTP_401_UNAUTHORIZED)          
+            return Response({'error': 'Employee cannot apply. Applicants have to apply'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         # body_unicode = request.body.decode('utf-8')
         body = json.loads(request.body)  
         print(body)
@@ -39,7 +40,7 @@ class ReferralsCreateView(APIView):
         job = Job.objects.get(id = jobid)
         applicant = Applicant.objects.get(user = user)
         ref_emp = Employee.objects.get(referral_link=ref_link)
-        referral = Referral(job = job, ref_emp = ref_emp, applicant = applicant, status = "In-Process")
+        referral = Referral(job=job, ref_emp=ref_emp, applicant=applicant, status="L01")
         referral.save()
         return Response(status=status.HTTP_200_OK)
 
