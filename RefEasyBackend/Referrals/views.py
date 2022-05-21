@@ -56,20 +56,23 @@ class GetReferralLink(APIView):
         return Response({'referral_link': emp.referral_link},
                             status=status.HTTP_200_OK)
 
+
 class TrackMyReferral(APIView):
     methods = ['GET']
     permission_classes = (IsAuthenticated,)
     serializer_class = ReferralSerializer
     filter_fields = ('ref_emp', 'applicant', 'job', 'status')
+
     def get(self, request):
         user = self.request.user
         queryset = None
         if user.groups.first().name != 'APP':
-            queryset = Referral.objects.get(ref_emp = user)
+            queryset = Referral.objects.filter(ref_emp__user=user)
         else:
-            queryset = Referral.objects.get(applicant = Applicant.objects.get(user=user))
-        serialized = ReferralSerializer(queryset)
+            queryset = Referral.objects.filter(applicant__user=user)
+        serialized = ReferralSerializer(queryset, many=True)
         return Response(serialized.data, status=status.HTTP_200_OK)
+
 
 class ReferralsUpdateView(APIView):
     methods = ['POST']
