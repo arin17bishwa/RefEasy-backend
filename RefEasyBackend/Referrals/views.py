@@ -1,5 +1,6 @@
 from distutils.log import error
 from email.mime import application
+from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.views import APIView
@@ -58,12 +59,13 @@ class TrackMyReferral(APIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = ReferralSerializer
     filter_fields = ('ref_emp', 'applicant', 'job', 'status')
-    def get(self, request, jobid):
+    def get(self, request):
         user = self.request.user
         queryset = None
         if user.groups.first().name != 'APP':
             queryset = Referral.objects.get(ref_emp = user)
         else:
-            queryset = Referral.objects.get(Applicant = user)
-        return queryset
+            queryset = Referral.objects.get(applicant = Applicant.objects.get(user=user))
+        serialized = ReferralSerializer(queryset)
+        return Response(serialized.data, status=status.HTTP_200_OK)
     
