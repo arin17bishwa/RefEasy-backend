@@ -5,8 +5,8 @@ from .models import Referral
 # Register your models here.
 
 class ReferralAdmin(admin.ModelAdmin):
-    list_display = ('job', 'ref_emp', 'applicant', 'slug', 'status')  # What to display as columns
-    search_fields = ('slug',)  # what to search by
+    list_display = ('job', 'ref_emp', 'applicant', 'status')  # What to display as columns
+    search_fields = ()  # what to search by
     readonly_fields = ('created_at', 'updated_at')  # Non-editable fields
     ordering = ['updated_at']
 
