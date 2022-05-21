@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from rest_framework.decorators import api_view, throttle_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.response import Response
 from rest_framework.generics import (
@@ -41,6 +41,22 @@ class UserRegistrationView(CreateAPIView):
         else:
             profile = Applicant(user=user, role=grp_name, email=email)
         profile.save()
+
+
+@api_view(['GET', ])
+@permission_classes([IsAuthenticated, ])
+def userDetailsView(request):
+    user = request.user
+    grp_name = user.groups.first().name
+    if grp_name == 'APP':
+        profile = Applicant.objects.get(user=user)
+        serializer_class = ApplicantSerializer
+    else:
+        profile = Employee.objects.get(user=user)
+        serializer_class = EmployeeSerializer
+    res = serializer_class(profile).data
+
+    return Response(data=res)
 
 
 class AllUsersView(ListAPIView):
