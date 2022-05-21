@@ -8,4 +8,5 @@ urlpatterns = [
     path('myreferrals/', views.TrackMyReferral.as_view(), name='my-referrals'),
     path('allreferrals', views.ListAllReferrals.as_view(), name='list-referrals'),
     path('apply/<str:jobid>/', views.ReferralsCreateView.as_view(), name='list-create-jobs'),
+    path('updatestatus/', views.ReferralsUpdateView.as_view(), name='update-status'),
 ]
