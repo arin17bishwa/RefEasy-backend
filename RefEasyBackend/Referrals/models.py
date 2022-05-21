@@ -10,6 +10,7 @@ from django.db.models.signals import post_save
 
 
 class Referral(models.Model):
+    id = models.AutoField(primary_key=True)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     ref_emp = models.ForeignKey(Employee, on_delete=models.CASCADE)
     applicant = models.ForeignKey(Applicant, on_delete=models.CASCADE)
