@@ -44,7 +44,7 @@ class ReferralsCreateView(APIView):
             return Response({'error': 'Employee cannot apply. Applicants have to apply'},
                             status=status.HTTP_401_UNAUTHORIZED)
         # body_unicode = request.body.decode('utf-8')
-        body = json.loads(request.body)
+        body = request.data
         ref_link = body['referral_link']
         print(ref_link)
         job = Job.objects.get(slug=slug)
