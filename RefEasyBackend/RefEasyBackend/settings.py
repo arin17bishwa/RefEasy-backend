@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # my apps
     'Users',
     'Jobs',
+    'Referrals',
 
     # 3rd party apps
     'rest_framework',
