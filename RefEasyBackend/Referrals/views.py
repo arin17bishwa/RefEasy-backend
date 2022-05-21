@@ -1,5 +1,6 @@
 from distutils.log import error
 from email.mime import application
+from urllib import request
 from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import generics, status
@@ -15,7 +16,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from django.core.mail import send_mail
-
+from RefEasyBackend.settings import MID_PATH, FRONTEND_HOST
 
 # Create your views here.
 
@@ -23,10 +24,16 @@ from django.core.mail import send_mail
 class ListAllReferrals(generics.ListCreateAPIView):
     serializer_class = ReferralSerializer
     filter_fields = ('ref_emp', 'applicant', 'job', 'status')
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return Referral.objects.all()
+        user = self.request.user
+        if user.groups.first().name == 'HR':
+            return Referral.objects.all()
+        else:
+            return Response({'error': 'Only HR can access this page'},
+                            status=status.HTTP_401_UNAUTHORIZED)
+        
 
 
 class ReferralsCreateView(APIView):
@@ -47,7 +54,7 @@ class ReferralsCreateView(APIView):
         ref_emp = Employee.objects.get(referral_link=ref_link)
         referral = Referral(job=job, ref_emp=ref_emp, applicant=applicant, status="L01")
         referral.save()
-        return Response(status=status.HTTP_200_OK)
+        return Response({'msg': 'Referred successfully'}, status=status.HTTP_200_OK)
 
 
 class GetReferralLink(APIView):
@@ -62,6 +69,26 @@ class GetReferralLink(APIView):
         return Response({'referral_link': emp.referral_link},
                         status=status.HTTP_200_OK)
 
+class GenLinkJob(APIView):
+    methods = ['GET']
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, job_slug):
+        user = self.request.user
+        if user.groups.first().name == 'APP':
+            return Response({'error': 'Applicants cannot refer'}, status=status.HTTP_401_UNAUTHORIZED)
+        emp = Employee.objects.get(user=user)
+        referral_link = request.get_host();
+        if referral_link == 'localhost:3000':
+            referral_link = 'http://' + FRONTEND_HOST
+        else:
+            referral_link = 'https://' + FRONTEND_HOST
+        # mid_path = '/refer/apply/'
+        # now defined in settings.py
+        referral_link = referral_link + MID_PATH + job_slug + '/'  + emp.referral_link + '/'       
+        print(referral_link)
+        return Response({'referral_link': referral_link},
+                        status=status.HTTP_200_OK)
 
 class TrackMyReferral(APIView):
     methods = ['GET']

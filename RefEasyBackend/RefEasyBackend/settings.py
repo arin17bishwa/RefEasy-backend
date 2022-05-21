@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
-
+FRONTEND_HOST = 'localhost:3000'
+MID_PATH = '/refer/apply/'
 # Application definition
 
 INSTALLED_APPS = [
