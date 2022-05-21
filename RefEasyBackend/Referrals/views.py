@@ -3,6 +3,7 @@ from email.mime import application
 from urllib import request
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.core.exceptions import PermissionDenied
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from Users.models import Applicant, Employee
@@ -21,19 +22,16 @@ from RefEasyBackend.settings import MID_PATH, FRONTEND_HOST
 # Create your views here.
 
 
-class ListAllReferrals(generics.ListCreateAPIView):
+class ListAllReferrals(generics.ListAPIView):
     serializer_class = ReferralSerializer
     filter_fields = ('ref_emp', 'applicant', 'job', 'status')
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         user = self.request.user
-        if user.groups.first().name == 'HR':
-            return Referral.objects.all()
-        else:
-            return Response({'error': 'Only HR can access this page'},
-                            status=status.HTTP_401_UNAUTHORIZED)
-        
+        if user.groups.first().name != 'HR':
+            raise PermissionDenied("You are not authorized to view the content.")
+        return Referral.objects.all()
 
 
 class ReferralsCreateView(APIView):
