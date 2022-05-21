@@ -4,6 +4,7 @@ from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from Users.models import Applicant, Employee
+import json
 
 from Referrals.serializers import ReferralSerializer
 from Referrals.models import Referral
@@ -29,12 +30,17 @@ class ReferralsCreateView(APIView):
         user = self.request.user
         if user.groups.first().name != 'APP':
             return Response({'error':'Employee cannot apply. Applicants have to aply'}, status=status.HTTP_401_UNAUTHORIZED)          
-        print('referral link is' + request.body.referral_link)
+        # body_unicode = request.body.decode('utf-8')
+        body = json.loads(request.body)  
+        print(body)
+        ref_link = body['referral_link']
+        print(ref_link)
         job = Job.objects.get(id = jobid)
         applicant = Applicant.objects.get(user = user)
-        ref_emp = Employee.objects.get(referral_link=request.body.refferal_link)
+        ref_emp = Employee.objects.get(referral_link=ref_link)
         referral = Referral(job = job, ref_emp = ref_emp, applicant = applicant, status = "In-Process")
-        Referral.save()
+        referral.save()
+        return Response(status=status.HTTP_200_OK)
 
 class GetReferralLink(APIView):
     methods = ['GET']

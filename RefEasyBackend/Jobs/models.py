@@ -26,7 +26,7 @@ class Job(models.Model):
     position_type = models.CharField(max_length=3, choices=POS_CHOICES)
     is_open = models.BooleanField(default=True)
     description = models.TextField()
-    slug = models.SlugField(max_length=64, db_index=True)
+    slug = models.SlugField(max_length=64, db_index=True, blank=True)
     last_edit = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

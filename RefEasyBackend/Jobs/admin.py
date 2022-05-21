@@ -8,7 +8,7 @@ from .models import Job
 
 
 class JobAdmin(admin.ModelAdmin):
-    list_display = ('title', 'department', 'location', 'position_type', 'is_open')  # What to display as columns
+    list_display = ('id', 'title', 'department', 'location', 'position_type', 'is_open')  # What to display as columns
     search_fields = ('title', 'department', 'location', 'position_type')  # what to search by
     readonly_fields = ('created_at', 'last_edit')  # Non-editable fields
     ordering = ['department']
