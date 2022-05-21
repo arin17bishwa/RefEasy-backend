@@ -33,7 +33,7 @@ class ReferralsCreateView(APIView):
     methods = ['POST']
     permission_classes = (IsAuthenticated,)
 
-    def post(self, request, jobid):
+    def post(self, request, slug):
         user = self.request.user
         if user.groups.first().name != 'APP':
             return Response({'error': 'Employee cannot apply. Applicants have to apply'},
@@ -42,7 +42,7 @@ class ReferralsCreateView(APIView):
         body = json.loads(request.body)
         ref_link = body['referral_link']
         print(ref_link)
-        job = Job.objects.get(id=jobid)
+        job = Job.objects.get(slug=slug)
         applicant = Applicant.objects.get(user=user)
         ref_emp = Employee.objects.get(referral_link=ref_link)
         referral = Referral(job=job, ref_emp=ref_emp, applicant=applicant, status="L01")
