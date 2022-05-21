@@ -90,7 +90,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 8,
+    'PAGE_SIZE': 100000,
 
     'DEFAULT_THROTTLE_RATES': {
         'anon': '4/day',
