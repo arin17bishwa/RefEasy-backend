@@ -66,6 +66,7 @@ class GetReferralLink(APIView):
         return Response({'referral_link': emp.referral_link},
                         status=status.HTTP_200_OK)
 
+
 class GenLinkJob(APIView):
     methods = ['GET']
     permission_classes = (IsAuthenticated,)
@@ -75,17 +76,18 @@ class GenLinkJob(APIView):
         if user.groups.first().name == 'APP':
             return Response({'error': 'Applicants cannot refer'}, status=status.HTTP_401_UNAUTHORIZED)
         emp = Employee.objects.get(user=user)
-        referral_link = request.get_host();
+        referral_link = request.get_host()
         if referral_link == 'localhost:3000':
             referral_link = 'http://' + FRONTEND_HOST
         else:
             referral_link = 'https://' + FRONTEND_HOST
         # mid_path = '/refer/apply/'
         # now defined in settings.py
-        referral_link = referral_link + MID_PATH + job_slug + '/'  + emp.referral_link + '/'       
+        referral_link = referral_link + MID_PATH + job_slug + '/' + emp.referral_link + '/'
         print(referral_link)
         return Response({'referral_link': referral_link},
                         status=status.HTTP_200_OK)
+
 
 class TrackMyReferral(APIView):
     methods = ['GET']
