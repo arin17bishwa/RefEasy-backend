@@ -5,14 +5,14 @@ from rest_framework.serializers import ValidationError
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .serializers import JobSerializer
+from .serializers import JobSerializer, JobListSerializer
 from .models import Job
 
 
 # Create your views here.
 
-class ListCreateJobView(generics.ListCreateAPIView):
-    serializer_class = JobSerializer
+class ListJobView(generics.ListAPIView):
+    serializer_class = JobListSerializer
     filter_fields = ('department', 'location', 'position_type', 'is_open')
 
     def get_queryset(self):
@@ -32,6 +32,11 @@ class ListCreateJobView(generics.ListCreateAPIView):
             if req.query_params.get(field):  # Ignore empty fields.
                 filters[field] = req.query_params.get(field)
         return queryset.filter(**filters)
+
+
+class CreateJobView(generics.CreateAPIView):
+    serializer_class = JobSerializer
+    authentication_classes = (IsAuthenticated,)
 
     def check_create_permissions(self, *args, **kwargs):
         user = self.request.user
