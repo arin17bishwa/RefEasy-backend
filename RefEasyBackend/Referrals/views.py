@@ -1,6 +1,5 @@
 from distutils.log import error
 from email.mime import application
-from urllib import request
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.exceptions import PermissionDenied
