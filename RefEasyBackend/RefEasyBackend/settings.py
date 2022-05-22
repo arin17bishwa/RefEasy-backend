@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
-FRONTEND_HOST = 'localhost:3000'
+FRONTEND_HOST = 'ref-easy-frontend.vercel.app'
 MID_PATH = '/refer/apply/'
 # Application definition
 

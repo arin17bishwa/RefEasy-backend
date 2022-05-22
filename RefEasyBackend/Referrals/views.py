@@ -134,7 +134,7 @@ class ReferralsUpdateView(APIView):
         referral.save()
 
         send_mail(
-            'Hi {app.user.username} proceeded to the next round of TI!',
+            f"Hi {app.user.username} proceeded to the next round of TI!",
             'Here is the message.',
             'tiitc2022@gmail.com',
             [referral.ref_emp.email],
