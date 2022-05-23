@@ -51,6 +51,23 @@ class ReferralsCreateView(APIView):
         ref_emp = Employee.objects.get(referral_link=ref_link)
         referral = Referral(job=job, ref_emp=ref_emp, applicant=applicant, status="L01")
         referral.save()
+
+        send_mail(
+            f"Hi {applicant.user.username} is successfully referred!",
+            f"Congratulations! {applicant.user.username} is successfully referred by you for {job.title}!",
+            'tiitc2022@gmail.com',
+            [referral.ref_emp.email],
+            fail_silently=False,
+        )
+
+        send_mail(
+            f"You've been sucessfully applied with referra for {job.title} at TI!",
+            f"You've been sucessfully applied with referral for {job.title} at TI! Stay tuned for more updates",
+            'tiitc2022@gmail.com',
+            [applicant.email],
+            fail_silently=False,
+        )
+
         return Response({'msg': 'Referred successfully'}, status=status.HTTP_200_OK)
 
 
@@ -135,16 +152,16 @@ class ReferralsUpdateView(APIView):
         referral.save()
 
         send_mail(
-            f"Hi {app.user.username} proceeded to the next round of TI!",
-            'Here is the message.',
+            f"Hi {app.user.username} proceeded to the next round {referral.status} of TI!",
+            'Congratulations! {app.user.username} has made it to the {referral.status} round!',
             'tiitc2022@gmail.com',
             [referral.ref_emp.email],
             fail_silently=False,
         )
 
         send_mail(
-            'Hi you proceeded to the next round of TI!',
-            'Here is the message.',
+            f"Hi you proceeded to the next round {referral.status} of TI!",
+            'Congratulations! You have made it to the {referral.status} round!',
             'tiitc2022@gmail.com',
             [app.email],
             fail_silently=False,
