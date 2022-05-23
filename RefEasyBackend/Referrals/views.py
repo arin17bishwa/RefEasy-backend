@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from Users.models import Applicant, Employee
 import json
 
-from Referrals.serializers import ReferralSerializer
+from Referrals.serializers import ReferralSerializer, ReferralViewingSerializer
 from Referrals.models import Referral
 from Jobs.models import Job
 
@@ -22,7 +22,7 @@ from RefEasyBackend.settings import MID_PATH, FRONTEND_HOST
 
 
 class ListAllReferrals(generics.ListAPIView):
-    serializer_class = ReferralSerializer
+    serializer_class = ReferralViewingSerializer
     filter_fields = ('ref_emp', 'applicant', 'job', 'status')
     permission_classes = (IsAuthenticated,)
 
@@ -92,7 +92,7 @@ class GenLinkJob(APIView):
 class TrackMyReferral(APIView):
     methods = ['GET']
     permission_classes = (IsAuthenticated,)
-    serializer_class = ReferralSerializer
+    serializer_class = ReferralViewingSerializer
     filter_fields = ('ref_emp', 'applicant', 'job', 'status')
 
     def get(self, request):
