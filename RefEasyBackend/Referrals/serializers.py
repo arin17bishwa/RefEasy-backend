@@ -32,4 +32,4 @@ class ReferralViewingSerializer(serializers.ModelSerializer):
         read_only_fields = ('created_at', 'updated_at', 'slug', 'job', 'ref_emp', 'applicant')
 
     def get_status(self, obj):
-        return STATUS_MAPPING[obj.status]
+        return STATUS_MAPPING.get('obj.status', '-')
