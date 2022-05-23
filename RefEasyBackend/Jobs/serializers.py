@@ -27,7 +27,6 @@ class JobListSerializer(serializers.ModelSerializer):
         read_only_fields = ('created_at', 'last_edit', 'slug')
 
     def get_department(self, obj):
-        print(obj)
         return DEPT_MAPPING[obj.department]
 
     def get_location(self, obj):
