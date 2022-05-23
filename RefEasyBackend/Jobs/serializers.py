@@ -27,10 +27,10 @@ class JobListSerializer(serializers.ModelSerializer):
         read_only_fields = ('created_at', 'last_edit', 'slug')
 
     def get_department(self, obj):
-        return DEPT_MAPPING[obj.department]
+        return DEPT_MAPPING.get(obj.department, '-')
 
     def get_location(self, obj):
-        return LOC_MAPPING[obj.location]
+        return LOC_MAPPING.get(obj.location, '-')
 
     def get_position_type(self, obj):
-        return POS_MAPPING[obj.position_type]
+        return POS_MAPPING.get(obj.position_type, '-')
