@@ -153,7 +153,7 @@ class ReferralsUpdateView(APIView):
 
         send_mail(
             f"Hi {app.user.username} proceeded to the next round {referral.status} of TI!",
-            'Congratulations! {app.user.username} has made it to the {referral.status} round!',
+            f'Congratulations! {app.user.username} has made it to the {referral.status} round!',
             'tiitc2022@gmail.com',
             [referral.ref_emp.email],
             fail_silently=False,
@@ -161,7 +161,7 @@ class ReferralsUpdateView(APIView):
 
         send_mail(
             f"Hi you proceeded to the next round {referral.status} of TI!",
-            'Congratulations! You have made it to the {referral.status} round!',
+            f'Congratulations! You have made it to the {referral.status} round!',
             'tiitc2022@gmail.com',
             [app.email],
             fail_silently=False,
